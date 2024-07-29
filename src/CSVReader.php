@@ -28,20 +28,20 @@ class CSVReader implements DataReaderInterface
     public function read(callable $callback): void
     {
         if (!file_exists($this->filePath)) {
-            throw new Exception("File not found: " . $this->filePath);
+            throw new Exception("File not found: " . $this->filePath); // Можно создать кастомный exception
         }
 
-        if (($handle = fopen($this->filePath, "r")) !== FALSE) {
-            $header = fgetcsv($handle, 1000, ";"); // Read and discard the header
-            if ($header === FALSE) {
-                throw new Exception("Invalid CSV header");
+        if (($handle = fopen($this->filePath, "r"))) {
+            $header = fgetcsv($handle, 1000, ";");
+            if (!$header) {
+                throw new Exception("Invalid CSV header"); // Можно создать кастомный exception
             }
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";"))) {
                 $callback($data);
             }
             fclose($handle);
         } else {
-            throw new Exception("Unable to open file: " . $this->filePath);
+            throw new Exception("Unable to open file: " . $this->filePath); // Можно создать кастомный exception
         }
     }
 }
