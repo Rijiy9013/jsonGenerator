@@ -9,11 +9,22 @@ class CSVReader implements DataReaderInterface
 {
     private string $filePath;
 
+    /**
+     * Конструктор принимает путь к CSV файлу.
+     *
+     * @param string $filePath
+     */
     public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
     }
 
+    /**
+     * Читает CSV файл построчно и передает каждую строку в callback функцию.
+     *
+     * @param callable $callback
+     * @throws Exception
+     */
     public function read(callable $callback): void
     {
         if (!file_exists($this->filePath)) {
